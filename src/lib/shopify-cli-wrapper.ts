@@ -1,5 +1,4 @@
 import { execa } from 'execa'
-import path from 'path'
 import { logger } from './logger'
 
 export type Theme = {
@@ -51,12 +50,11 @@ export async function pushTheme(context: CommandContext) {
 }
 
 export async function pullData(store: string, themeId: number) {
-  const folder = path.join(process.cwd(), 'src', 'data')
   await execa({
     stdout: 'inherit',
     stderr: 'inherit',
   })`shopify theme pull
-      --force --path ${folder}
+      --force
       --store=${store}
       --theme=${themeId}
       --only=templates/*.json
