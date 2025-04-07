@@ -1,10 +1,10 @@
 import simpleGit from 'simple-git'
 import { logger } from '../lib/logger'
-import { fetchThemeById, pullData } from '../lib/shopify-cli-wrapper'
+import { fetchLiveTheme, fetchThemeById, pullData } from '../lib/shopify-cli-wrapper'
 
 export type PullCommandArgs = {
   store: string
-  theme: number
+  theme?: number
   force: boolean
 }
 
@@ -20,8 +20,10 @@ export default async function pullCommand(options: PullCommandArgs) {
     }
   }
 
-  const theme = await fetchThemeById(options.store, options.theme)
-  logger.box(`Pulling from: ${theme.name} - ${theme.id} (${theme.role})`)
+  const theme = options.theme
+    ? await fetchThemeById(options.store, options.theme)
+    : await fetchLiveTheme(options.store)
 
-  await pullData(options.store, options.theme)
+  logger.box(`Pulling from: ${theme.name} - ${theme.id} (${theme.role})`)
+  await pullData(options.store, theme.id)
 }

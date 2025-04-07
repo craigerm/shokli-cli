@@ -13,6 +13,18 @@ async function fetchThemes(store: string) {
   return JSON.parse(res.stdout) as Theme[]
 }
 
+export async function fetchLiveTheme(store: string) {
+  const res = await execa('shopify', [
+    'theme',
+    'list',
+    `--store=${store}`,
+    '--json',
+    '--role=live',
+  ])
+  const themes = JSON.parse(res.stdout) as Theme[]
+  return themes[0]
+}
+
 export async function fetchThemeById(store: string, themeId: number) {
   const themes = await fetchThemes(store)
   const theme: Theme | undefined = themes.find((theme) => theme.id === themeId)

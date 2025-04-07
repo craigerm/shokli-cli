@@ -25,7 +25,7 @@ program
   .command('pull')
   .description('Fetches json templates and settings from remote theme')
   .requiredOption('-s, --store <store>', 'Shopify store domain')
-  .requiredOption('-t, --theme <themeId>', 'Theme ID', parseInt)
+  .option('-t, --theme <themeId>', 'Theme ID, defaults to live theme', parseInt)
   .option('-f, --force', 'Allows pulling when repo is dirty', false)
   .action(async (options) => {
     await pullCommand(options as PullCommandArgs)
